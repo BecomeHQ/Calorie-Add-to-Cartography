@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calorie Cartography - Food Trails Simulation</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Main Title with Info Icon -->
+  <div class="title-bar">
+    <h1>Calorie "Add-to-Cart"ography</h1>
+    <span class="info-icon" onclick="openInfoPopup()">ℹ️</span>
+    
+    
+    
+    
+    
+  </div>
+  
+  <div id="mapid"></div>
+  
+  <div id="heatmapLegend" style="position: absolute; bottom: 10px; left: 10px; background-color: white; padding: 10px; border-radius: 5px; font-size: 14px;">
+    <h4>Heatmap Legend</h4>
+    <div><span style="background-color: red; width: 12px; height: 12px; display: inline-block;"></span> Non Vegetarian</div>
+    <div><span style="background-color: green; width: 12px; height: 12px; display: inline-block;"></span> Vegan</div>
+    <div><span style="background-color: yellow; width: 12px; height: 12px; display: inline-block;"></span> Vegetarian</div>
+</div>
+
+
+  <!-- Sidebar with buttons and stats -->
+  <div class="sidebar">
+    <h3>The Urban Appetite</h3>
+    <button id="trackButton" onclick="toggleTracking()">Track</button>
+    <button id="analyzeButton" onclick="analyzeTrail()">Analyze</button>
+    <button id="resetButton" onclick="resetMap()">Reset</button>
+    <div class="stats">
+      <br><br>
+      <strong>Food Item:</strong> <span id="foodName">-</span><br>
+      <strong>Areas Visited:</strong> <span id="areasVisited">-</span><br>
+      <strong>Calories:</strong> <span id="calories">-</span> kcal<br>
+    </div>
+  </div>
+  
+<!--   
+  // Add the HTML structure for the Bill Popup and download button
+document.body.insertAdjacentHTML('beforeend', `
+  <!-- Bill Format Analysis Popup -->
+  <div id="billPopup" class="popup">
+    <div class="popup-content" id="billContent">
+     <h3>🍽️ Collective Tab <span class="info-icon" onclick="toggleExplanation()">ℹ️</span></h3>
+<div id="explanationSection" class="hidden">
+  <h4>About</h4>
+  <ul>
+    <li><strong>Calories Consumed:</strong> Calculated based on total calories of each food item delivered. The effort cost reflects gym time or physical activity needed to burn these calories.</li>
+    <li><strong>Total Distance Traveled:</strong> The total kilometers covered in all delivery routes, influencing fuel usage.</li>
+    <li><strong>Fuel Burned:</strong> Fuel calculated by distance, with offset cost based on the carbon impact (approx. $3 per ton of CO₂ for each 2.2 kg emitted per liter).</li>
+    <li><strong>Cholesterol Increased:</strong> Reflects cholesterol impact based on food type, with healthcare or insurance-related costs for cholesterol management.</li>
+    <li><strong>Plastic Consumption:</strong> Plastic in grams per container (including labels and tape), with a recycling cost of $0.40 per gram.</li>
+    <li><strong>Total Tab on Society:</strong> The aggregate cost of fuel, recycling plastic, calorie burning, and cholesterol management.</li>
+  </ul>
+</div>
+
+      <div id="billPolygonShape"></div> <!-- Polygon shape placeholder -->
+      <hr>
+      <p>Calories Consumed: <span id="billCalories">-</span> kcal</p>
+      <hr>
+      <p>Number of Orders: <span id="billOrders">-</span></p>
+      <hr>
+      <p>Total Distance Traveled: <span id="billDistance"></span></p>
+      <hr>
+
+      <p>Fuel Burned: <span id="billFuel">-</span> liters</p>
+      <hr>
+      <p>Cholesterol Increased: <span id="billCholesterol">-</span> mg</p>
+      <hr>
+      <p>Plastic Consumption: <span id="billPlastic">-</span> grams</p>
+      <hr>
+      <p><strong>Holistic Cost:</strong> <span id="totalCostHumanity">-</span> INR</p>
+      <button onclick="downloadBillCanvas()">Download </button>
+      <button onclick="closeBillPopup()">Close</button>
+    </div>
+  </div>
+`); -->
+  
+  
+  
+  // Add HTML structure for the Bill Popup
+document.body.insertAdjacentHTML('beforeend', `
+  <!-- Bill Format Analysis Popup -->
+  <div id="billPopup" class="popup">
+    <div class="popup-content" id="billContent">
+      <h3>🍽️ Humanity's Bill</h3>
+      <div id="billPolygonShape"></div> <!-- Polygon shape placeholder -->
+      <hr>
+      <p>Calories Consumed: <span id="billCalories">-</span> kcal</p>
+      <hr>
+      <p>Number of Orders: <span id="billOrders">-</span></p>
+      <hr>
+      <p>Fuel Burned: <span id="billFuel">-</span> liters</p>
+      <hr>
+      <p>Cholesterol Increased: <span id="billCholesterol">-</span> mg</p>
+      <hr>
+      <p>Plastic Consumption: <span id="billPlastic">-</span> grams</p>
+      <hr>
+      <p><strong>Total Cost to Humanity:</strong> <span id="totalCostHumanity">-</span> INR</p>
+      <br><br><br>
+      <button onclick="downloadBillCanvas()">Download </button>
+      <button onclick="closeBillPopup()">Close</button>
+    </div>
+  </div>
+`);
+  
+  
+  
+  
+
+  <!-- Analysis Popup with Combined Metrics -->
+  <div id="analysisPopup" class="popup">
+    <div class="popup-content">
+      <h3 id="popupTitle"></h3>
+      <p>Calories Consumed: <span id="popupCalories">-</span> kcal</p>
+      <p>Number of Orders: <span id="popupOrders">-</span></p> <!-- Updated Text Here -->
+      <p>Fuel Burned: <span id="popupFuel">-</span> liters</p>
+      <p>Cholesterol Increased: <span id="popupCholesterol">-</span> mg</p>
+      <p>Plastic Consumption: <span id="popupPlastic">-</span> grams</p>
+      <br>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <!-- Info Popup for Tool Explanation -->
+  <div id="infoPopup" class="popup">
+    <div class="popup-content">
+      <h3>What am I looking at?</h3>
+      <p>What if we could visualize the food delivery chain as it meets the city’s appetite, revealing the hidden costs of each choice we make? This tool does just that, capturing the digital immediacy of our selections and blending the act of consumption with cartography. It maps not only calories consumed but the full trail of impact—from the fuel burned to satisfy our cravings to the cholesterol that accumulates and the mounting plastic waste left in the wake of each order. Through this lens, we see the true footprint of convenience on our environment and health, offering an honest look at the collective cost of our everyday indulgences.
+</br></br>
+Press Track to simulate the kinds of food different people are ordering. Hit Stop to analyze, Reset to track afresh, and watch the city’s hunger build anew. Zoom in to see the trail map and heat map distributions, or download the Collective Tab for an in-depth look at the city’s appetite.
+</br></br>
+
+© 2024 Indhu Kanth. Become®. All rights reserved.
+</br></br>
+For suggestions, experiences, and collaboration, reach out to ink@become.team</p>
+      <button onclick="closeInfoPopup()">Close</button>
+    </div>
+  </div>
+
+  <!-- Leaflet, JavaScript libraries, and heatmap.js for heat map effects -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+  <script src="sketch.js"></script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* Map container */
+#mapid {
+  height: 100vh;
+  width: 100vw;
+  outline: 5px solid #fff;
+}
+
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('Anton-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Apply the font to the heading */
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.3em;
+  margin-bottom: 0.5em;
+}
+
+/* Title bar with info icon */
+.title-bar {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  color: #ff5722;
+  font-size: 24px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.info-icon {
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  position: absolute;
+  top: 60px;
+  left: 20px;
+  width: 250px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.sidebar h3 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 18px;
+  color: #ff5722;
+}
+
+/* Button styles with active/hover/inactive states */
+.sidebar button {
+  padding: 8px 15px;
+  margin-top: 10px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar button:hover {
+  background-color: #ff3d00;
+}
+
+.sidebar button:active {
+  background-color: #ff8a50;
+}
+
+button.inactive {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+/* Analysis and Info popups */
+.popup {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 380px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1001;
+  display: none;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.popup-content h3 {
+  color: #ff5722;
+  font-size: 18px;
+}
+
+.popup-content button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Humanity's Bill Popup - positioned under the sidebar */
+#billPopup {
+  position: absolute;
+  top: 280px; /* Adjusted to position it below the sidebar */
+  left: 20px; /* Align with sidebar */
+  width: 300px; /* Increase the width */
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  font-size: 14px;
+  border-radius: 8px;
+  display: none; /* Hidden by default */
+}
+
+#billPopup .popup-content h3 {
+  color: #ff5722;
+  font-size: 18px;
+}
+
+
+#heatmapLegend {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Ensures legend appears above the map */
+}
+
+
+#billPopup .popup-content p {
+  font-size: 14px;
+  margin: 5px 0;
+  white-space: nowrap; /* Ensures each metric stays on one line */
+}
+
+#billPopup .popup-content button {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#billPopup .popup-content p span {
+  display: inline; /* Change to inline to avoid extra spacing */
+  font-weight: bold;
+  margin-right: 5px; /* Adjusts the space between the value and unit */
+}
+
+.hidden {
+  display: none;
+}
+
+#explanationSection {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
